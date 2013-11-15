@@ -9,7 +9,6 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/core.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="1" linkType="1" path="libs"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -18,7 +17,10 @@
       <airExcludes/>
     </application>
   </applications>
-  <modules/>
+  <modules>
+    <module application="src/LoloToolBox.mxml" destPath="application/module/exportSwf/ExportSwfView.swf" optimize="true" sourcePath="src/application/module/exportSwf/ExportSwfView.mxml"/>
+    <module application="src/LoloToolBox.mxml" destPath="application/module/uiEditor/UIEditorView.swf" optimize="true" sourcePath="src/application/module/uiEditor/UIEditorView.mxml"/>
+  </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
@@ -31,4 +33,3 @@
     </buildTarget>
   </buildTargets>
 </actionScriptProperties>
-

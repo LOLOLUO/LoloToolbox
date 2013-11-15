@@ -82,7 +82,7 @@
 		<!-- <y></y> -->
 
 		<!-- The window's minimum size, specified as a width/height pair in pixels, such as "400 200". Optional. -->
-		<!-- <minSize></minSize> -->
+		<minSize>985 685</minSize>
 
 		<!-- The window's initial maximum size, specified as a width/height pair in pixels, such as "1600 1200". Optional. -->
 		<!-- <maxSize></maxSize> -->
@@ -155,7 +155,7 @@
 			<!-- <name></name> -->
 
 			<!-- The extension to register. Required. -->
-			<!-- <extension></extension> -->
+			<supportedProfiles>extendedDesktop</supportedProfiles>
 			
 			<!-- The description of the file type. Optional. -->
 			<!-- <description></description> -->
