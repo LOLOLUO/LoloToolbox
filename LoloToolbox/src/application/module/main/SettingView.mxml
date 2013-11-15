@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<main:Setting xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					 xmlns:s="library://ns.adobe.com/flex/spark" 
+					 xmlns:mx="library://ns.adobe.com/flex/mx"
+					 xmlns:main="application.module.main.*"
+					 xmlns:controls="application.controls.*"
+					 width="500" height="505" creationComplete="creationCompleteHandler(event)"
+					 fontFamily="微软雅黑" fontSize="12" title="设置"
+					 >
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<controls:GroupBox x="20" y="30" width="460" height="110" title="通用设置">
+		<s:TextInput id="toolPathText" x="110" y="25" width="330" height="25" color="#666666"
+					 enabled="false" text="C:/LoloTools/"/>
+		<s:Label x="5" y="33" width="100" text="工具箱文件夹：" textAlign="right"/>
+		<s:Label x="5" y="73" width="100" color="#990000" text="导出纹理：" textAlign="right"/>
+		<s:CheckBox id="compressCB" x="110" y="69" label="ATF压缩"
+					click="compressCB_clickHandler(event)" selected="true"/>
+		<s:DropDownList id="platformDDL" x="185" y="65" width="90" height="25" enabled="{compressCB.selected}" >
+		</s:DropDownList>
+		<s:DropDownList id="qualityDDL" x="375" y="65" width="65" height="25"></s:DropDownList>
+		<s:Label x="335" y="73" text="品质："/>
+	</controls:GroupBox>
+	
+	<controls:GroupBox x="20" y="175" width="460" height="280" title="支持程序">
+		<s:TextInput id="winRarPathText" x="110" y="95" width="275" height="25" color="#666666"
+					 text="D:/Program Files/WinRAR/WinRAR.exe"/>
+		<s:Label x="2" y="95" width="105" height="25" text="WinRAR：" textAlign="right"
+				 verticalAlign="middle"/>
+		<s:Button id="winRarPathBtn" x="390" y="95" width="50" height="25" label="浏览"
+				  click="browseBtn_clickHandler(event)"/>
+		<s:TextInput id="explorerPathText" x="110" y="25" width="275" height="25" color="#666666"
+					 text="C:/Windows/explorer.exe"/>
+		<s:Label x="2" y="25" width="105" height="25" text="explorer：" textAlign="right"
+				 verticalAlign="middle"/>
+		<s:TextInput id="nppPathText" x="110" y="60" width="275" height="25" color="#666666"
+					 text="D:/Program Files/Notepad++/notepad++.exe"/>
+		<s:Label x="2" y="60" width="105" height="25" text="notepad++：" textAlign="right"
+				 verticalAlign="middle"/>
+		<s:Button id="nppPathBtn" x="390" y="60" width="50" height="25" label="浏览"
+				  click="browseBtn_clickHandler(event)"/>
+		<s:Button id="explorerPathBtn" x="390" y="25" width="50" height="25" label="浏览"
+				  click="browseBtn_clickHandler(event)"/>
+		<s:TextInput id="mxmlcPathText" x="110" y="130" width="275" height="25" color="#666666"
+					 text="D:/Program Files (x86)/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/bin/mxmlc.exe"/>
+		<s:Label x="2" y="130" width="105" height="25" text="mxmlc：" textAlign="right"
+				 verticalAlign="middle"/>
+		<s:Button id="mxmlcPathBtn" x="390" y="130" width="50" height="25" label="浏览"
+				  click="browseBtn_clickHandler(event)"/>
+		<s:TextInput id="adtPathText" x="110" y="165" width="275" height="25" color="#666666"
+					 text="F:/SDK/AdobeAIRSDK3.7/bin/adt.bat"/>
+		<s:Label x="2" y="165" width="105" height="25" text="adt：" textAlign="right"
+				 verticalAlign="middle"/>
+		<s:Button id="adtPathBtn" x="390" y="165" width="50" height="25" label="浏览"
+				  click="browseBtn_clickHandler(event)"/>
+		<s:TextInput id="tpPathText" x="110" y="200" width="275" height="25" color="#666666"
+					 text="D:/Program Files (x86)/TexturePacker/bin/TexturePacker.exe"/>
+		<s:Label x="2" y="200" width="105" height="25" text="TexturePacker：" textAlign="right"
+				 verticalAlign="middle"/>
+		<s:Button id="tpPathBtn" x="390" y="200" width="50" height="25" label="浏览"
+				  click="browseBtn_clickHandler(event)"/>
+		<s:TextInput id="png2atfPathText" x="110" y="235" width="275" height="25" color="#666666"
+					 text="F:/SDK/atftools/windows/png2atf.exe"/>
+		<s:Label x="2" y="235" width="105" height="25" text="png2atf：" textAlign="right"
+				 verticalAlign="middle"/>
+		<s:Button id="png2atfPathBtn" x="390" y="235" width="50" height="25" label="浏览"
+				  click="browseBtn_clickHandler(event)"/>
+	</controls:GroupBox>
+	<s:Button id="closeBtn" x="473" y="-27" width="21" height="21" icon="{IconAssets.Close}"
+			  click="closeBtn_clickHandler(event)"/>
+</main:Setting>
