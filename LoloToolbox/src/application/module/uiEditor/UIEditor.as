@@ -3,9 +3,9 @@ package application.module.uiEditor
 	import flash.events.MouseEvent;
 	
 	import spark.components.Button;
-	import spark.modules.Module;
+	import spark.components.NavigatorContent;
 	
-	public class UIEditor extends Module
+	public class UIEditor extends NavigatorContent
 	{
 		public var aaBtn:Button;
 		

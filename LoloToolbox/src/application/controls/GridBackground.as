@@ -13,14 +13,13 @@ package application.controls
 		
 		
 		
-		public function GridBackground(width:int=0, height:int=0)
+		public function GridBackground()
 		{
 			this.cacheAsBitmap = true;
-			if(width > 0 && height > 0) show(width, height);
 		}
 		
 		
-		public function show(width:int, height:int):void
+		public function draw():void
 		{
 			this.graphics.clear();
 			this.graphics.beginFill(0x666666);
@@ -46,6 +45,19 @@ package application.controls
 				}
 			}
 			this.graphics.endFill();
+		}
+		
+		
+		override public function set width(value:Number):void
+		{
+			super.width = value;
+			draw();
+		}
+		
+		override public function set height(value:Number):void
+		{
+			super.height = value;
+			draw();
 		}
 		//
 	}

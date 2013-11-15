@@ -1,13 +1,20 @@
 package application.module.main
 {
 	import application.common.AppCommon;
+	import application.module.exportSwf.ExportSwfView;
 	
 	import com.greensock.TweenMax;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filesystem.File;
+	import flash.system.Capabilities;
+	
+	import lolo.data.SharedData;
+	import lolo.utils.StringUtil;
 	
 	import mx.containers.ViewStack;
+	import mx.controls.Alert;
 	
 	import spark.components.Button;
 	import spark.components.Group;
@@ -26,12 +33,17 @@ package application.module.main
 		public var exportMcBtn:Button;
 		public var uiEditorBtn:Button;
 		
+		public var exportSwf:ExportSwfView;
+		
+		public var setting:Setting;
+		
 		private var _currentToolBtn:Button;
+		
+		private var _soData:Object = SharedData.soData;
 		
 		
 		public function Main()
 		{
-			
 		}
 		
 		protected function addedToStageHandler(event:Event):void
@@ -39,11 +51,20 @@ package application.module.main
 			AppCommon.app = this as LoloToolBox;
 			AppCommon.stage = this.stage;
 			
+			this.nativeWindow.x = Capabilities.screenResolutionX - this.nativeWindow.width >> 1;
+			this.nativeWindow.y = Capabilities.screenResolutionY - this.nativeWindow.height - 40 >> 1;
+			
 			stage.addEventListener(Event.RESIZE, stage_resizeHandler);
 			stage_resizeHandler();
 			
-			_currentToolBtn = exportMcBtn;
-			showToolBtn_clickHandler();
+			//第一次使用工具箱
+			if(_soData.settings == null) {
+				setting.filePathText.text = StringUtil.backslashToSlash(File.applicationDirectory.nativePath) + "/LoloToolbox/";
+				setting.showOrHide();
+				Alert.show("这是您第一次使用LoloToolbox，请认真配置好相关程序路径，以及其他设置项！", "提示");
+			}
+			
+			exportSwf.appInitialization();
 		}
 		
 		
@@ -54,6 +75,11 @@ package application.module.main
 			toolMenu.graphics.beginFill(0xFFFFFF, 0.8);
 			toolMenu.graphics.drawRect(0, 0, AppCommon.stage.stageWidth, height);
 			toolMenu.graphics.endFill();
+			
+			if(setting.parent) {
+				setting.x = AppCommon.stage.stageWidth - setting.width >> 1;
+				setting.y = AppCommon.stage.stageHeight - setting.height >> 1;
+			}
 		}
 		
 		
@@ -68,6 +94,7 @@ package application.module.main
 			TweenMax.killTweensOf(toolMenu);
 			
 			if(showToolBtn.label == "收起工具列表") {
+				if(_currentToolBtn == null) return;
 				showToolBtn.label = _currentToolBtn.label;
 				TweenMax.to(toolMenu, 0.2, { autoAlpha:0 });
 			}
@@ -90,10 +117,10 @@ package application.module.main
 			switch(_currentToolBtn)
 			{
 				case exportMcBtn:
-					toolListVS.selectedIndex = 0;
+					toolListVS.selectedIndex = 1;
 					break;
 				case uiEditorBtn:
-					toolListVS.selectedIndex = 1;
+					toolListVS.selectedIndex = 2;
 					break;
 			}
 		}
@@ -106,7 +133,7 @@ package application.module.main
 		 */
 		protected function settingBtn_clickHandler(event:MouseEvent):void
 		{
-			
+			setting.showOrHide();
 		}
 		//
 	}

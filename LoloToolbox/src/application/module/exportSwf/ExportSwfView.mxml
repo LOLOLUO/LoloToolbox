@@ -3,18 +3,33 @@
 					 xmlns:s="library://ns.adobe.com/flex/spark" 
 					 xmlns:mx="library://ns.adobe.com/flex/mx"
 					 xmlns:exportSwf="application.module.exportSwf.*"
-					 width="400" height="300"
+					 width="100%" height="100%" xmlns:controls="application.controls.*"
+					 fontFamily="微软雅黑" fontSize="12"
+					 creationPolicy="all"
+					 creationComplete="appInitialization(event)"
 					 >
 	
-	<fx:Script>
-		<![CDATA[
-			
-		]]>
-	</fx:Script>
 	
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<s:Button id="aaBtn" x="107" y="156" label="aa" click="aaBtn_clickHandler(event)"/>
+	<controls:GridBackground id="gridBG" x="5" y="5" width="200" height="200"/>
+	
+	<controls:GroupBox id="controlBox" x="220" y="15" width="350" height="560" title="操作区">
+		
+		<s:Label x="0" y="27" width="100" text="要解析的SWF：" textAlign="right"/>
+		<s:TextInput id="swfPathText" x="100" y="20" width="185" height="25" color="#666666"
+					 editable="false"/>
+		<s:Button id="openSwfBtn" x="290" y="20" width="50" height="25" label="浏览"
+				  click="openSwfBtn_clickHandler(event)"/>
+		
+		<s:Label x="0" y="68" width="100" text="要导出的元件：" textAlign="right"/>
+		<s:List id="elementList" x="10" y="90" width="328" height="327"
+				itemRenderer="application.module.exportSwf.SwfItemRenderer"/>
+		<s:CheckBox id="allSelectCB" x="21" y="425" label="全选 / 反选"
+					click="allSelectCB_clickHandler(event)"/>
+		
+	</controls:GroupBox>
+	
 </exportSwf:ExportSwf>

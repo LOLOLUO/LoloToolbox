@@ -17,10 +17,7 @@
       <airExcludes/>
     </application>
   </applications>
-  <modules>
-    <module application="src/LoloToolBox.mxml" destPath="application/module/exportSwf/ExportSwfView.swf" optimize="true" sourcePath="src/application/module/exportSwf/ExportSwfView.mxml"/>
-    <module application="src/LoloToolBox.mxml" destPath="application/module/uiEditor/UIEditorView.swf" optimize="true" sourcePath="src/application/module/uiEditor/UIEditorView.mxml"/>
-  </modules>
+  <modules/>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>

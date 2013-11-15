@@ -5,21 +5,26 @@
 					 xmlns:main="application.module.main.*"
 					 xmlns:controls="application.controls.*"
 					 width="500" height="505" creationComplete="creationCompleteHandler(event)"
-					 fontFamily="微软雅黑" fontSize="12" title="设置"
+					 fontFamily="微软雅黑" fontSize="12" title="　　设置"
 					 >
+	<fx:Script>
+		<![CDATA[
+			import application.common.IconAssets;
+		]]>
+	</fx:Script>
 	
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	
+	<s:Image x="14" y="-25" source="{IconAssets.Setting}"/>
 	<controls:GroupBox x="20" y="30" width="460" height="110" title="通用设置">
-		<s:TextInput id="toolPathText" x="110" y="25" width="330" height="25" color="#666666"
-					 enabled="false" text="C:/LoloTools/"/>
-		<s:Label x="5" y="33" width="100" text="工具箱文件夹：" textAlign="right"/>
+		<s:TextInput id="filePathText" x="110" y="25" width="330" height="25" color="#999999"
+					 editable="false" text="C:/LoloToolbox/"/>
+		<s:Label x="5" y="33" width="100" text="文件存储目录：" textAlign="right"/>
 		<s:Label x="5" y="73" width="100" color="#990000" text="导出纹理：" textAlign="right"/>
 		<s:CheckBox id="compressCB" x="110" y="69" label="ATF压缩"
-					click="compressCB_clickHandler(event)" selected="true"/>
-		<s:DropDownList id="platformDDL" x="185" y="65" width="90" height="25" enabled="{compressCB.selected}" >
+					click="compressCB_clickHandler(event)"/>
+		<s:DropDownList id="platformDDL" x="185" y="65" width="90" height="25" enabled="false">
 		</s:DropDownList>
 		<s:DropDownList id="qualityDDL" x="375" y="65" width="65" height="25"></s:DropDownList>
 		<s:Label x="335" y="73" text="品质："/>

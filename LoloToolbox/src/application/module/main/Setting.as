@@ -1,5 +1,7 @@
 package application.module.main
 {
+	import application.common.AppCommon;
+	
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -21,7 +23,7 @@ package application.module.main
 	
 	public class Setting extends Panel
 	{
-		public var toolPathText:TextInput;
+		public var filePathText:TextInput;
 		public var platformDDL:DropDownList;
 		public var qualityDDL:DropDownList;
 		public var compressCB:CheckBox;
@@ -61,7 +63,7 @@ package application.module.main
 			NativeApplication.nativeApplication.addEventListener(Event.EXITING, exitingHandler);
 			
 			if(_soData.settings) {
-				toolPathText.text = _soData.settings.toolPathText;
+				filePathText.text = _soData.settings.filePathText;
 				platformDDL.selectedIndex = _soData.settings.platformDDL;
 				qualityDDL.selectedIndex = _soData.settings.qualityDDL;
 				compressCB.selected = _soData.settings.compressCB;
@@ -89,7 +91,7 @@ package application.module.main
 		protected function exitingHandler(event:Event=null):void
 		{
 			_soData.settings = {
-				toolPathText : toolPathText.text,
+				filePathText : filePathText.text,
 				compressCB : compressCB.selected,
 				platformDDL : platformDDL.selectedIndex,
 				qualityDDL : qualityDDL.selectedIndex,
@@ -102,8 +104,25 @@ package application.module.main
 				tpPathText : tpPathText.text,
 				png2atfPathText : png2atfPathText.text
 			};
-			
 			SharedData.so.flush();
+		}
+		
+		
+		
+		/**
+		 * 显示或隐藏设置面板
+		 */
+		public function showOrHide():void
+		{
+			if(this.parent) {
+				PopUpManager.removePopUp(this);
+				exitingHandler();
+			}
+			else {
+				x = AppCommon.stage.stageWidth - width >> 1;
+				y = AppCommon.stage.stageHeight - height >> 1;
+				PopUpManager.addPopUp(this, AppCommon.app, true);
+			}
 		}
 		
 		
@@ -113,8 +132,7 @@ package application.module.main
 		 */
 		protected function closeBtn_clickHandler(event:MouseEvent):void
 		{
-			PopUpManager.removePopUp(this);
-			exitingHandler();
+			showOrHide();
 		}
 		
 		

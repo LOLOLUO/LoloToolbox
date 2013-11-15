@@ -6,24 +6,27 @@
 					   xmlns:exportSwf="application.module.exportSwf.*"
 					   width="970" height="670"
 					   fontFamily="微软雅黑" fontSize="12" showStatusBar="false"
-					   addedToStage="addedToStageHandler(event)"
+					   addedToStage="addedToStageHandler(event)" xmlns:uiEditor="application.module.uiEditor.*"
 					   >
 	<fx:Script>
 		<![CDATA[
-			
-			
-			
+			import application.common.IconAssets;
 		]]>
 	</fx:Script>
+	<fx:Style source="styles.css" />
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<mx:ViewStack id="toolListVS" x="0" y="35" width="100%" height="100%">
-		<s:ModuleLoader id="exportSwf" url="application/module/exportSwf/ExportSwfView.swf" width="100%" height="100%">
-		</s:ModuleLoader>
-		<s:ModuleLoader id="uiEditor" url="application/module/uiEditor/UIEditorView.swf" width="100%" height="100%">
-		</s:ModuleLoader>
+	<mx:ViewStack id="toolListVS" x="0" y="35" width="100%" height="100%" resizeToContent="true">
+		<s:NavigatorContent>
+		</s:NavigatorContent>
+		
+		<exportSwf:ExportSwfView id="exportSwf">
+		</exportSwf:ExportSwfView>
+		
+		<uiEditor:UIEditorView id="uiEditor">
+		</uiEditor:UIEditorView>
 	</mx:ViewStack>
 	
 	<s:Group id="toolMenu" x="0" y="35" width="100%" height="100%">
@@ -31,13 +34,14 @@
 				  click="toolMenuBtn_clickHandler(event)" fontSize="20"/>
 		<s:Button id="uiEditorBtn" x="165" y="30" width="120" height="60" label="界面编辑"
 				  click="toolMenuBtn_clickHandler(event)" fontSize="20"/>
+		<main:SettingView id="setting" x="341" y="30">
+		</main:SettingView>
 	</s:Group>
 	
 	<mx:MenuBar x="0" y="0" width="100%" height="31"></mx:MenuBar>
 	<s:Button id="showToolBtn" x="3" y="3" width="95" height="25" label="收起工具列表"
 			  click="showToolBtn_clickHandler(event)"/>
-	<s:Button id="settingBtn" x="922" y="3" width="45" height="25" label="设置"
+	<s:Button id="settingBtn" x="942" y="3" width="25" height="25"
+			  icon="{IconAssets.Setting}" toolTip="设置"
 			  click="settingBtn_clickHandler(event)"/>
-	<main:SettingView x="218" y="-148">
-	</main:SettingView>
 </main:Main>
