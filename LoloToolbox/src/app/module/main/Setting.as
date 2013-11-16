@@ -1,6 +1,6 @@
-package application.module.main
+package app.module.main
 {
-	import application.common.AppCommon;
+	import app.common.AppCommon;
 	
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;

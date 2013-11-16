@@ -1,4 +1,4 @@
-package application.utils
+package app.utils
 {
 	import flash.display.Loader;
 	import flash.events.Event;

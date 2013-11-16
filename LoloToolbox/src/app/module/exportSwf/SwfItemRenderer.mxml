@@ -20,7 +20,7 @@
 		]]>
 	</fx:Script>
 	
-	<s:Label id="labelText" x="32" y="6" color="#444444" />
-	<s:CheckBox id="exportCB" x="10" y="2" toolTip="是否导出该元件"/>
+	<s:Label id="labelText" x="32" y="8" color="#444444" />
+	<s:CheckBox id="exportCB" x="10" y="3" toolTip="是否导出该元件"/>
 	
 </s:ItemRenderer>

@@ -1,10 +1,10 @@
-package application.module.exportSwf
+package app.module.exportSwf
 {
-	import application.common.AppCommon;
-	import application.common.AppConstants;
-	import application.controls.GridBackground;
-	import application.controls.GroupBox;
-	import application.utils.SwfUtil;
+	import app.common.AppCommon;
+	import app.common.AppConstants;
+	import app.controls.GridBackground;
+	import app.controls.GroupBox;
+	import app.utils.SwfUtil;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -46,10 +46,9 @@ package application.module.exportSwf
 			super();
 		}
 		
-		public function appInitialization(event:FlexEvent=null):void
+		protected function addedToStageHandler(event:Event):void
 		{
-			if(!initialized || !AppCommon.stage) return;
-			
+			trace("ok!");
 			_swfFile = new File();
 			_swfFile.addEventListener(Event.SELECT, swfFile_eventHandler);
 			_swfFile.addEventListener(Event.COMPLETE, swfFile_eventHandler);
@@ -64,6 +63,7 @@ package application.module.exportSwf
 			gridBG.width = AppCommon.stage.stageWidth - gridBG.x - controlBox.width - 15;
 			gridBG.height = AppCommon.stage.stageHeight - AppCommon.app.toolListVS.y - gridBG.y - 5;
 		}
+		
 		
 		
 		

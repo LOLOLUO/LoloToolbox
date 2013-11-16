@@ -2,12 +2,18 @@
 <exportSwf:ExportSwf xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					 xmlns:s="library://ns.adobe.com/flex/spark" 
 					 xmlns:mx="library://ns.adobe.com/flex/mx"
-					 xmlns:exportSwf="application.module.exportSwf.*"
-					 width="100%" height="100%" xmlns:controls="application.controls.*"
+					 xmlns:exportSwf="app.module.exportSwf.*"
+					 width="100%" height="100%" xmlns:controls="app.controls.*"
 					 fontFamily="微软雅黑" fontSize="12"
 					 creationPolicy="all"
-					 creationComplete="appInitialization(event)"
+					 addedToStage="addedToStageHandler(event)"
 					 >
+	
+	<fx:Script>
+		<![CDATA[
+			
+		]]>
+	</fx:Script>
 	
 	
 	<fx:Declarations>
@@ -26,7 +32,7 @@
 		
 		<s:Label x="0" y="68" width="100" text="要导出的元件：" textAlign="right"/>
 		<s:List id="elementList" x="10" y="90" width="328" height="327"
-				itemRenderer="application.module.exportSwf.SwfItemRenderer"/>
+				itemRenderer="app.module.exportSwf.SwfItemRenderer"/>
 		<s:CheckBox id="allSelectCB" x="21" y="425" label="全选 / 反选"
 					click="allSelectCB_clickHandler(event)"/>
 		

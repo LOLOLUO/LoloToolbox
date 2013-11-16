@@ -1,4 +1,4 @@
-package application.module.uiEditor
+package app.module.uiEditor
 {
 	import flash.events.MouseEvent;
 	

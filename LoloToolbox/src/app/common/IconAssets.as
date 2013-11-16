@@ -1,4 +1,4 @@
-package application.common
+package app.common
 {
 	public class IconAssets
 	{

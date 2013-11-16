@@ -1,7 +1,7 @@
-package application.module.main
+package app.module.main
 {
-	import application.common.AppCommon;
-	import application.module.exportSwf.ExportSwfView;
+	import app.common.AppCommon;
+	import app.module.exportSwf.ExportSwfView;
 	
 	import com.greensock.TweenMax;
 	
@@ -48,7 +48,7 @@ package application.module.main
 		
 		protected function addedToStageHandler(event:Event):void
 		{
-			AppCommon.app = this as LoloToolBox;
+			AppCommon.app = this as LoloToolbox;
 			AppCommon.stage = this.stage;
 			
 			this.nativeWindow.x = Capabilities.screenResolutionX - this.nativeWindow.width >> 1;
@@ -63,8 +63,6 @@ package application.module.main
 				setting.showOrHide();
 				Alert.show("这是您第一次使用LoloToolbox，请认真配置好相关程序路径，以及其他设置项！", "提示");
 			}
-			
-			exportSwf.appInitialization();
 		}
 		
 		

@@ -1,4 +1,4 @@
-package application.common
+package app.common
 {
 	import flash.display.Stage;
 
@@ -10,7 +10,7 @@ package application.common
 	{
 		public static var stage:Stage;
 		
-		public static var app:LoloToolBox;
+		public static var app:LoloToolbox;
 		//
 	}
 }

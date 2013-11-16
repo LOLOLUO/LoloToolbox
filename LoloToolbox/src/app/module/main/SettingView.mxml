@@ -2,14 +2,14 @@
 <main:Setting xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					 xmlns:s="library://ns.adobe.com/flex/spark" 
 					 xmlns:mx="library://ns.adobe.com/flex/mx"
-					 xmlns:main="application.module.main.*"
-					 xmlns:controls="application.controls.*"
+					 xmlns:main="app.module.main.*"
+					 xmlns:controls="app.controls.*"
 					 width="500" height="505" creationComplete="creationCompleteHandler(event)"
 					 fontFamily="微软雅黑" fontSize="12" title="　　设置"
 					 >
 	<fx:Script>
 		<![CDATA[
-			import application.common.IconAssets;
+			import app.common.IconAssets;
 		]]>
 	</fx:Script>
 	
