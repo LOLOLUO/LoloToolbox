@@ -13,7 +13,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="LoloToolBox.mxml">
+    <application path="LoloToolbox.mxml">
       <airExcludes/>
     </application>
   </applications>
@@ -22,7 +22,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default">
-      <airSettings airCertificatePath="" airTimestamp="true" anePathSet="false" version="1">
+      <airSettings airCertificatePath="" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
       </airSettings>

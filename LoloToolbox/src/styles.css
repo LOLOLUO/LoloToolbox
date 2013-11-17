@@ -12,3 +12,9 @@ mx|ToolTip
 	backgroundAlpha	: 0.8;
 	cornerRadius	: 5;
 }
+
+s|SkinnableContainer
+{
+	fontFamily	: "微软雅黑";
+	fontSize	: 12;
+}

@@ -21,7 +21,12 @@ package app.module.main
 	import spark.components.Panel;
 	import spark.components.TextInput;
 	
-	public class Setting extends Panel
+	
+	/**
+	 * 工具箱设置面板
+	 * @author LOLO
+	 */
+	public class SettingPanel extends Panel
 	{
 		public var filePathText:TextInput;
 		public var platformDDL:DropDownList;
@@ -104,6 +109,7 @@ package app.module.main
 				tpPathText : tpPathText.text,
 				png2atfPathText : png2atfPathText.text
 			};
+			_soData.settings = null;
 			SharedData.so.flush();
 		}
 		
@@ -121,7 +127,7 @@ package app.module.main
 			else {
 				x = AppCommon.stage.stageWidth - width >> 1;
 				y = AppCommon.stage.stageHeight - height >> 1;
-				PopUpManager.addPopUp(this, AppCommon.app, true);
+				PopUpManager.addPopUp(this, AppCommon.toolbox, true);
 			}
 		}
 		
@@ -178,7 +184,7 @@ package app.module.main
 		
 		protected function compressCB_clickHandler(event:MouseEvent):void
 		{
-			platformDDL.enabled = compressCB.selected;
+			platformDDL.enabled = qualityDDL.enabled = compressCB.selected;
 		}
 		//
 	}

@@ -26,17 +26,21 @@ package app.module.main
 	 */
 	public class Main extends WindowedApplication
 	{
-		public var toolMenu:Group;
 		public var toolListVS:ViewStack;
 		public var showToolBtn:Button;
+		public var settingBtn:Button;
 		
+		/**工具菜单，工具激活按钮列表*/
+		public var toolMenu:Group;
 		public var exportMcBtn:Button;
 		public var uiEditorBtn:Button;
 		
 		public var exportSwf:ExportSwfView;
 		
-		public var setting:Setting;
+		public var settingPanel:SettingPanelView;
+		public var progressPane:ProgressPanelView;
 		
+		/**当前正在使用的工具对应的，工具激活按钮*/
 		private var _currentToolBtn:Button;
 		
 		private var _soData:Object = SharedData.soData;
@@ -44,11 +48,12 @@ package app.module.main
 		
 		public function Main()
 		{
+			
 		}
 		
 		protected function addedToStageHandler(event:Event):void
 		{
-			AppCommon.app = this as LoloToolbox;
+			AppCommon.toolbox = this as LoloToolbox;
 			AppCommon.stage = this.stage;
 			
 			this.nativeWindow.x = Capabilities.screenResolutionX - this.nativeWindow.width >> 1;
@@ -59,8 +64,8 @@ package app.module.main
 			
 			//第一次使用工具箱
 			if(_soData.settings == null) {
-				setting.filePathText.text = StringUtil.backslashToSlash(File.applicationDirectory.nativePath) + "/LoloToolbox/";
-				setting.showOrHide();
+				settingPanel.filePathText.text = StringUtil.backslashToSlash(File.documentsDirectory.nativePath) + "/LoloToolbox/";
+				settingPanel.showOrHide();
 				Alert.show("这是您第一次使用LoloToolbox，请认真配置好相关程序路径，以及其他设置项！", "提示");
 			}
 		}
@@ -74,9 +79,16 @@ package app.module.main
 			toolMenu.graphics.drawRect(0, 0, AppCommon.stage.stageWidth, height);
 			toolMenu.graphics.endFill();
 			
-			if(setting.parent) {
-				setting.x = AppCommon.stage.stageWidth - setting.width >> 1;
-				setting.y = AppCommon.stage.stageHeight - setting.height >> 1;
+			settingBtn.x = AppCommon.stage.stageWidth - settingBtn.width - 3;
+			
+			if(settingPanel.parent) {
+				settingPanel.x = AppCommon.stage.stageWidth - settingPanel.width >> 1;
+				settingPanel.y = AppCommon.stage.stageHeight - settingPanel.height >> 1;
+			}
+			
+			if(progressPane.parent) {
+				progressPane.x = AppCommon.stage.stageWidth - progressPane.width >> 1;
+				progressPane.y = AppCommon.stage.stageHeight - progressPane.height >> 1;
 			}
 		}
 		
@@ -131,7 +143,7 @@ package app.module.main
 		 */
 		protected function settingBtn_clickHandler(event:MouseEvent):void
 		{
-			setting.showOrHide();
+			settingPanel.showOrHide();
 		}
 		//
 	}

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<main:Setting xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<main:SettingPanel xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					 xmlns:s="library://ns.adobe.com/flex/spark" 
 					 xmlns:mx="library://ns.adobe.com/flex/mx"
 					 xmlns:main="app.module.main.*"
 					 xmlns:controls="app.controls.*"
 					 width="500" height="505" creationComplete="creationCompleteHandler(event)"
-					 fontFamily="微软雅黑" fontSize="12" title="　　设置"
+					 title="　　设置"
 					 >
 	<fx:Script>
 		<![CDATA[
@@ -26,7 +26,7 @@
 					click="compressCB_clickHandler(event)"/>
 		<s:DropDownList id="platformDDL" x="185" y="65" width="90" height="25" enabled="false">
 		</s:DropDownList>
-		<s:DropDownList id="qualityDDL" x="375" y="65" width="65" height="25"></s:DropDownList>
+		<s:DropDownList id="qualityDDL" x="375" y="65" width="65" height="25" enabled="false"></s:DropDownList>
 		<s:Label x="335" y="73" text="品质："/>
 	</controls:GroupBox>
 	
@@ -76,4 +76,4 @@
 	</controls:GroupBox>
 	<s:Button id="closeBtn" x="473" y="-27" width="21" height="21" icon="{IconAssets.Close}"
 			  click="closeBtn_clickHandler(event)"/>
-</main:Setting>
+</main:SettingPanel>

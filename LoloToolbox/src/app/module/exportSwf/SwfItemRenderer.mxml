@@ -3,7 +3,6 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				autoDrawBackground="true"
-				fontFamily="微软雅黑" fontSize="12"
 				width="100%" height="25"
 				dataChange="dataChangeHandler(event)"
 				>

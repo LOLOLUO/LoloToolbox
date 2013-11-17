@@ -8,9 +8,11 @@ package app.common
 	 */
 	public class AppCommon
 	{
+		/**Flash原生舞台*/
 		public static var stage:Stage;
 		
-		public static var app:LoloToolbox;
+		/**工具箱*/
+		public static var toolbox:LoloToolbox;
 		//
 	}
 }
