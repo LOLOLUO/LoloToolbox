@@ -6,17 +6,29 @@ package app.module.exportSwf
 	import app.controls.GroupBox;
 	import app.utils.SwfUtil;
 	
+	import com.greensock.TweenMax;
+	
+	import flash.desktop.NativeProcess;
+	import flash.desktop.NativeProcessStartupInfo;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
+	
+	import lolo.utils.StringUtil;
 	
 	import mx.collections.ArrayList;
 	import mx.controls.Alert;
-	import mx.controls.ProgressBar;
 	import mx.core.UIComponent;
+	import mx.events.CloseEvent;
+	import mx.graphics.codec.PNGEncoder;
 	
 	import spark.components.Button;
 	import spark.components.CheckBox;
@@ -48,14 +60,12 @@ package app.module.exportSwf
 		public var setAllBoundsBtn:Button;
 		
 		public var exportBtn:Button;
-		/**导出进度*/
-		public var exportPB:ProgressBar;
 		
 		
 		/**用于浏览和加载SWF文件数据*/
 		private var _swfFile:File;
-		/**用于显示实例的容器*/
-		private var _instanceC:UIComponent;
+		/**用于显示元件的容器*/
+		private var _elementC:UIComponent;
 		/**需要导出的元件列表*/
 		private var _exportElementList:Array;
 		
@@ -68,11 +78,11 @@ package app.module.exportSwf
 		
 		protected function addedToStageHandler(event:Event):void
 		{
-			_instanceC = new UIComponent();
-			_instanceC.mouseEnabled = _instanceC.mouseChildren = false;
-			_instanceC.x = gridBG.x;
-			_instanceC.y = gridBG.y;
-			this.addElement(_instanceC);
+			_elementC = new UIComponent();
+			_elementC.mouseEnabled = _elementC.mouseChildren = false;
+			_elementC.x = gridBG.x;
+			_elementC.y = gridBG.y;
+			this.addElement(_elementC);
 			
 			_swfFile = new File();
 			_swfFile.addEventListener(Event.SELECT, swfFile_eventHandler);
@@ -122,50 +132,21 @@ package app.module.exportSwf
 		 */
 		private function parseSwfComplete(list:Array):void
 		{
-			elementList.dataProvider = new ArrayList(list);
-			allSelectCB.selected = true;
-			
-			_instanceC.removeChildren();
-			exportBtn.enabled = true;
-		}
-		
-		
-		
-		/**
-		 * 全选或者反选所有导出元件
-		 * @param event
-		 */
-		protected function allSelectCB_clickHandler(event:MouseEvent):void
-		{
-			for(var i:int = 0; i < elementList.dataGroup.numChildren; i++) {
-				(elementList.dataGroup.getChildAt(i) as SwfItemRenderer).exportCB.selected = allSelectCB.selected;
-			}
-		}
-		
-		/**
-		 * 元件列表有选中
-		 * @param event
-		 */
-		protected function elementList_changeHandler(event:IndexChangeEvent):void
-		{
-			var data:Object = elementList.selectedItem;
-			
-			_instanceC.removeChildren();
-			_instanceC.addChild(data.instance);
-			
-			//还没计算过实例的大小，找出最大边界，并绘制边框
-			if(!data.bounds) {
+			//绘制所有元件的边界
+			for(var i:int=0; i < list.length; i++)
+			{
+				var data:Object = list[i];
+				data.export = true;
 				var bounds:Rectangle = data.instance.getBounds(data.instance);
 				if(data.instance is MovieClip) {
-					for(var i:int=1; i < data.instance.totalFrames; i++) {
-						data.instance.gotoAndStop(i);
+					for(var n:int=1; n < data.instance.totalFrames; n++) {
+						data.instance.gotoAndStop(n + 1);
 						var rect:Rectangle = data.instance.getBounds(data.instance);
 						if(rect.x < bounds.x) bounds.x = rect.x;
 						if(rect.y < bounds.y) bounds.y = rect.y;
 						if(rect.width > bounds.width) bounds.width = rect.width;
 						if(rect.height > bounds.height) bounds.height = rect.height;
 					}
-					data.instance.play();
 				}
 				bounds.x = int(bounds.x);
 				bounds.y = int(bounds.y);
@@ -175,6 +156,29 @@ package app.module.exportSwf
 				
 				drawElementBounds(data);
 			}
+			
+			
+			elementList.dataProvider = new ArrayList(list);
+			allSelectCB.selected = true;
+			
+			playOrStopCurrentElement(false);
+			_elementC.removeChildren();
+			exportBtn.enabled = true;
+		}
+		
+		
+		/**
+		 * 元件列表有选中
+		 * @param event
+		 */
+		protected function elementList_changeHandler(event:IndexChangeEvent):void
+		{
+			var data:Object = elementList.selectedItem;
+			
+			playOrStopCurrentElement(false);
+			_elementC.removeChildren();
+			_elementC.addChild(data.instance);
+			playOrStopCurrentElement(true);
 			
 			boundsWidthText.text = data.bounds.width;
 			boundsHeightText.text = data.bounds.height;
@@ -239,6 +243,46 @@ package app.module.exportSwf
 		
 		
 		/**
+		 * 停止或者播放当前正在查看的元件（如果元件是MC）
+		 * @param isPlay
+		 */
+		private function playOrStopCurrentElement(isPlay:Boolean):void
+		{
+			if(_elementC.numChildren == 0) return;
+			var mc:MovieClip = _elementC.getChildAt(0) as MovieClip;
+			if(mc) {
+				isPlay
+				? mc.addEventListener(Event.ENTER_FRAME, currentElement_enterFrameHandler)
+				: mc.removeEventListener(Event.ENTER_FRAME, currentElement_enterFrameHandler);
+			}
+		}
+		private function currentElement_enterFrameHandler(event:Event):void
+		{
+			var mc:MovieClip = event.target as MovieClip;
+			if(mc.currentFrame == mc.totalFrames) {
+				mc.gotoAndStop(1);
+			}
+			else {
+				mc.nextFrame();
+			}
+		}
+		
+		
+		
+		/**
+		 * 全选或者反选所有导出元件
+		 * @param event
+		 */
+		protected function allSelectCB_clickHandler(event:MouseEvent):void
+		{
+			for(var i:int = 0; i < elementList.dataGroup.numChildren; i++) {
+				(elementList.dataGroup.getChildAt(i) as SwfItemRenderer).exportCB.selected = allSelectCB.selected;
+			}
+		}
+		
+		
+		
+		/**
 		 * 点击导出按钮
 		 * @param event
 		 */
@@ -246,9 +290,10 @@ package app.module.exportSwf
 		{
 			//找出要导出的元件列表
 			_exportElementList = [];
-			for(var i:int = 0; i < elementList.dataGroup.numChildren; i++) {
-				if((elementList.dataGroup.getChildAt(i) as SwfItemRenderer).exportCB.selected) {
-					_exportElementList.push(elementList.dataProvider.getItemAt(i));
+			for(var i:int = 0; i < elementList.dataProvider.length; i++) {
+				var itemData:Object = elementList.dataProvider.getItemAt(i);
+				if(itemData.export) {
+					_exportElementList.push(itemData);
 				}
 			}
 			
@@ -257,17 +302,91 @@ package app.module.exportSwf
 				return;
 			}
 			
-//			exportPB.setProgress(0, _exportElementList.length);
-//			exportNextElement();
+			AppCommon.toolbox.progressPane.show(_exportElementList.length);
+			
+			//删除根目录的内容
+			var rootDirectory:File = new File(AppCommon.toolbox.settingPanel.filePathText.text + "exportSwf");
+			try { rootDirectory.deleteDirectory(true); } catch(error:Error) { }
+			
+			TweenMax.delayedCall(0.5, exportNextElement);
 		}
-		
 		
 		/**
 		 * 导出下一个元件
 		 */
 		private function exportNextElement():void
 		{
+			var info:Object = _exportElementList.shift();
+			var element:Sprite = info.instance;
+			var mc:MovieClip = element as MovieClip;
+			var bounds:Rectangle = info.bounds;
+			var name:String = info.name.replace("::", ".");
+			element.graphics.clear();
 			
+			//根目录
+			var rootDirectory:File = new File(AppCommon.toolbox.settingPanel.filePathText.text + "exportSwf");
+			if(mc) {
+				for(var i:int=0; i < mc.totalFrames; i++) {
+					mc.gotoAndStop(i+1);
+					savePng(
+						new File(rootDirectory.nativePath + "/" + name +"/" + StringUtil.leadingZero(i+1, String(mc.totalFrames).length) +".png"),
+						bounds, mc
+					);
+				}
+			}
+			else {
+				savePng(
+					new File(rootDirectory.nativePath + "/" + name +"/1.png"),
+					bounds, element
+				);
+			}
+			
+			drawElementBounds(info);
+			AppCommon.toolbox.progressPane.addProgress();
+			
+			//导出完毕
+			if(_exportElementList.length == 0) {
+				Alert.show("导出完毕！\n可点击[OK]查看。", "提示", Alert.OK|Alert.CANCEL, null, closeHandler);
+				AppCommon.toolbox.progressPane.hide();
+			}
+			else {
+				TweenMax.delayedCall(0.01, exportNextElement);
+			}
+		}
+		
+		/**
+		 * 保存一张png图像
+		 * @param file
+		 * @param bounds
+		 * @param drawTarget
+		 */
+		private function savePng(file:File, bounds:Rectangle, drawTarget:DisplayObject):void
+		{
+			var bitmapData:BitmapData = new BitmapData(bounds.width, bounds.height, true, 0);
+			bitmapData.draw(drawTarget, new Matrix(1, 0, 0, 1, -bounds.x, -bounds.y));
+			var fs:FileStream = new FileStream();
+			fs.open(file, FileMode.WRITE);
+			fs.writeBytes(new PNGEncoder().encode(bitmapData));
+			fs.close();
+		}
+		
+		
+		/**
+		 * 保存完毕，查看目录
+		 * @param event
+		 */
+		private function closeHandler(event:CloseEvent):void
+		{
+			if(event.detail == Alert.OK) {
+				var info:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+				var args:Vector.<String> = new Vector.<String>();
+				
+				args.push(StringUtil.slashToBackslash(AppCommon.toolbox.settingPanel.filePathText.text + "exportSwf"));
+				
+				info.executable = new File(AppCommon.toolbox.settingPanel.explorerPathText.text);
+				info.arguments = args;
+				new NativeProcess().start(info);
+			}
 		}
 		//
 	}

@@ -55,6 +55,8 @@ package app.module.main
 		 */
 		protected function creationCompleteHandler(event:FlexEvent):void
 		{
+			(this.parent as IVisualElementContainer).removeElement(this);
+			
 			platformDDL.dataProvider = new ArrayCollection([
 				{label:"iOS"}, {label:"Android"}, {label:"Win/Mac"}, {label:"All"}
 			]);
@@ -82,8 +84,6 @@ package app.module.main
 				png2atfPathText.text = _soData.settings.png2atfPathText;
 			}
 			
-			(this.parent as IVisualElementContainer).removeElement(this);
-			
 			_browseFile = new File();
 			_browseFile.addEventListener(Event.SELECT, browseFile_selectHandler);
 		}
@@ -109,14 +109,14 @@ package app.module.main
 				tpPathText : tpPathText.text,
 				png2atfPathText : png2atfPathText.text
 			};
-			_soData.settings = null;
+			
 			SharedData.so.flush();
 		}
 		
 		
 		
 		/**
-		 * 显示或隐藏设置面板
+		 * 显示或隐藏面板
 		 */
 		public function showOrHide():void
 		{

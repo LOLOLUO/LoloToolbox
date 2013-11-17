@@ -5,9 +5,10 @@
 					xmlns:main="app.module.main.*"
 					width="340" height="105"
 					title="操作正在进行中，请稍候..."
+					creationComplete="creationCompleteHandler(event)"
 					>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<mx:ProgressBar id="progressBar" x="20" y="20" width="300" height="30" labelPlacement="center" label=" " mode="manual" />
+	<mx:ProgressBar id="progressBar" x="20" y="20" width="300" height="30" labelPlacement="center" label="" mode="manual" />
 </main:ProgressPanel>

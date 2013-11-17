@@ -44,7 +44,6 @@
 				  fontSize="14"/>
 		<s:Button id="setAllBoundsBtn" x="130" y="510" width="155" height="25" label="将宽和高应用到全部元件"
 				  click="setBoundsBtn_clickHandler(event)" enabled="false"/>
-		<mx:ProgressBar id="exportPB" x="95" y="560" width="160" height="35" labelPlacement="center"/>
 		
 	</controls:GroupBox>
 	

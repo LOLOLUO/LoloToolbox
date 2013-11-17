@@ -13,13 +13,18 @@
 			protected function dataChangeHandler(event:FlexEvent):void
 			{
 				labelText.text = data.name;
-				exportCB.selected = true;
+				data.export = exportCB.selected = true;
+			}
+			
+			protected function exportCB_changeHandler(event:Event):void
+			{
+				data.export = exportCB.selected;
 			}
 			
 		]]>
 	</fx:Script>
 	
 	<s:Label id="labelText" x="32" y="8" color="#444444" />
-	<s:CheckBox id="exportCB" x="10" y="3" toolTip="是否导出该元件"/>
+	<s:CheckBox id="exportCB" x="10" y="3" toolTip="是否导出该元件" change="exportCB_changeHandler(event)"/>
 	
 </s:ItemRenderer>

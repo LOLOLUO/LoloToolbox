@@ -37,6 +37,11 @@ package app.utils
 		 */
 		public static function parseSwf(data:ByteArray, callback:Function, createInstance:Boolean=true):void
 		{
+			if(callback == null) {
+				trace("[LoloToolbox][SwfUtil] 解析SWF数据成功后的回调不能为null！");
+				return;
+			}
+			
 			if(_swfLoader == null) {
 				_swfLoader = new Loader();
 				_swfLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, swfLoader_completeHandler);
@@ -89,10 +94,14 @@ package app.utils
 					result.push(dNames[i]);
 				}
 			}
-			
-			if(_currentSwfInfo.callback != null) {
-				_currentSwfInfo.callback(result);
+			if(_currentSwfInfo.createInstance) {
+				result.sortOn("name");
 			}
+			else {
+				result.sort();
+			}
+			_currentSwfInfo.callback(result);
+			
 			_swfLoader.unloadAndStop();
 			
 			_running = false;
