@@ -1,5 +1,6 @@
 package app.utils
 {
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.system.ApplicationDomain;
@@ -78,16 +79,18 @@ package app.utils
 		{
 			var dNames:Vector.<String> = _swfDomain.getQualifiedDefinitionNames();
 			var result:Array = [];
+			var instance:DisplayObject;
 			var tempClass:Class;
 			for(var i:int = 0; i < dNames.length; i++) {
 				//需要创建成实例
 				if(_currentSwfInfo.createInstance) {
 					try {
 						tempClass = _swfDomain.getDefinition(dNames[i]) as Class;
-						result.push({ instance:new tempClass(), name:dNames[i] });
+						instance = new tempClass();
+						result.push({ instance:instance, name:dNames[i] });
 					}
 					catch(error:Error) {
-						trace("[LoloToolbox][SwfUtil] 不能创建 " + dNames[i] + " 的实例！可能实例类型为BitmapData，或者实例的构造函数有错误的引用！");
+						trace("[LoloToolbox][SwfUtil] 不能创建 " + dNames[i] + " 的实例！可能实例的构造函数参数有误，或是有错误的引用！或者实例根本不是DisplayObject");
 					}
 				}
 				else {

@@ -3,6 +3,8 @@ package app.module.main
 	import app.common.AppCommon;
 	
 	import flash.desktop.NativeApplication;
+	import flash.desktop.NativeProcess;
+	import flash.desktop.NativeProcessStartupInfo;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filesystem.File;
@@ -185,6 +187,23 @@ package app.module.main
 		protected function compressCB_clickHandler(event:MouseEvent):void
 		{
 			platformDDL.enabled = qualityDDL.enabled = compressCB.selected;
+		}
+		
+		
+		/**
+		 * 查看工具箱根目录
+		 * @param event
+		 */
+		protected function filePathBtn_clickHandler(event:MouseEvent):void
+		{
+			var info:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+			var args:Vector.<String> = new Vector.<String>();
+			
+			args.push(StringUtil.slashToBackslash(filePathText.text));
+			
+			info.executable = new File(AppCommon.toolbox.settingPanel.explorerPathText.text);
+			info.arguments = args;
+			new NativeProcess().start(info);
 		}
 		//
 	}

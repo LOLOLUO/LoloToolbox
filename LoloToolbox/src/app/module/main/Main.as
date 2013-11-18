@@ -2,6 +2,7 @@ package app.module.main
 {
 	import app.common.AppCommon;
 	import app.module.exportSwf.ExportSwfView;
+	import app.module.imageCompressor.ImageCompressorView;
 	
 	import com.greensock.TweenMax;
 	
@@ -34,8 +35,10 @@ package app.module.main
 		public var toolMenu:Group;
 		public var exportMcBtn:Button;
 		public var uiEditorBtn:Button;
+		public var imageCompressorBtn:Button;
 		
 		public var exportSwf:ExportSwfView;
+		public var imageCompressor:ImageCompressorView;
 		
 		public var settingPanel:SettingPanelView;
 		public var progressPane:ProgressPanelView;
@@ -128,6 +131,9 @@ package app.module.main
 			{
 				case exportMcBtn:
 					toolListVS.selectedIndex = 1;
+					break;
+				case imageCompressorBtn:
+					toolListVS.selectedIndex = 2;
 					break;
 				case uiEditorBtn:
 					toolListVS.selectedIndex = 2;

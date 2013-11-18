@@ -33,9 +33,9 @@
 		
 		<s:Label x="0" y="482" width="130" text="所选元件的边界大小：" textAlign="right"/>
 		<s:Label x="175" y="482" text="x"/>
-		<s:TextInput id="boundsWidthText" x="130" y="475" width="40" height="25" color="#666666"
+		<s:TextInput id="boundsWidthText" x="130" y="475" width="40" height="25" color="#333333"
 					 enabled="false" restrict="0-9" />
-		<s:TextInput id="boundsHeightText" x="185" y="475" width="40" height="25" color="#666666"
+		<s:TextInput id="boundsHeightText" x="185" y="475" width="40" height="25" color="#333333"
 					 enabled="false" restrict="0-9" />
 		<s:Button id="setBoundsBtn" x="235" y="475" width="50" height="25" label="确定"
 				  click="setBoundsBtn_clickHandler(event)" enabled="false" toolTip="边界的设定越小，导出时速度越快"/>

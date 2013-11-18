@@ -13,6 +13,7 @@ package app.module.exportSwf
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -98,7 +99,12 @@ package app.module.exportSwf
 			controlBox.x = AppCommon.stage.stageWidth - controlBox.width - 5;
 			gridBG.width = AppCommon.stage.stageWidth - gridBG.x - controlBox.width - 15;
 			gridBG.height = AppCommon.stage.stageHeight - AppCommon.toolbox.toolListVS.y - gridBG.y - 5;
-			if(elementList.selectedItem) drawElementBounds(elementList.selectedItem);
+			
+			if(elementList.dataProvider) {
+				for(var i:int=0; i < elementList.dataProvider.length; i++) {
+					moveElementTogridBgCenter(elementList.dataProvider.getItemAt(i));
+				}
+			}
 		}
 		
 		
@@ -138,6 +144,9 @@ package app.module.exportSwf
 				var data:Object = list[i];
 				data.export = true;
 				var bounds:Rectangle = data.instance.getBounds(data.instance);
+				var instanceC:Sprite = data.instanceC = new Sprite();//放到容器中，容器用来绘制边框
+				instanceC.addChild(data.instance);
+				
 				if(data.instance is MovieClip) {
 					for(var n:int=1; n < data.instance.totalFrames; n++) {
 						data.instance.gotoAndStop(n + 1);
@@ -148,10 +157,10 @@ package app.module.exportSwf
 						if(rect.height > bounds.height) bounds.height = rect.height;
 					}
 				}
-				bounds.x = int(bounds.x);
-				bounds.y = int(bounds.y);
-				bounds.width = Math.ceil(bounds.width);
-				bounds.height = Math.ceil(bounds.height);
+				bounds.x = int(bounds.x - 1);
+				bounds.y = int(bounds.y - 1);
+				bounds.width = Math.ceil(bounds.width + 2);
+				bounds.height = Math.ceil(bounds.height + 2);
 				data.bounds = bounds;
 				
 				drawElementBounds(data);
@@ -177,7 +186,7 @@ package app.module.exportSwf
 			
 			playOrStopCurrentElement(false);
 			_elementC.removeChildren();
-			_elementC.addChild(data.instance);
+			_elementC.addChild(data.instanceC);
 			playOrStopCurrentElement(true);
 			
 			boundsWidthText.text = data.bounds.width;
@@ -192,17 +201,26 @@ package app.module.exportSwf
 		 */
 		private function drawElementBounds(item:Object):void
 		{
-			var element:Sprite = item.instance;
+			var container:Sprite = item.instanceC;
 			var bounds:Rectangle = item.bounds;
 			
-			element.graphics.clear();
-			element.graphics.beginFill(0, 0);
-			element.graphics.lineStyle(1, 0xCC0000);
-			element.graphics.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-			element.graphics.endFill();
+			container.graphics.clear();
+			container.graphics.beginFill(0, 0);
+			container.graphics.lineStyle(1, 0xCC0000);
+			container.graphics.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+			container.graphics.endFill();
 			
-			element.x = (gridBG.width - bounds.width) / 2 - bounds.x;
-			element.y = (gridBG.height - bounds.height) / 2 - bounds.y;
+			moveElementTogridBgCenter(item);
+		}
+		
+		/**
+		 * 将元件居中到舞台（格子背景）
+		 * @param item
+		 */
+		private function moveElementTogridBgCenter(item:Object):void
+		{
+			item.instanceC.x = (gridBG.width - item.bounds.width) / 2 - item.bounds.x;
+			item.instanceC.y = (gridBG.height - item.bounds.height) / 2 - item.bounds.y;
 		}
 		
 		/**
@@ -249,7 +267,7 @@ package app.module.exportSwf
 		private function playOrStopCurrentElement(isPlay:Boolean):void
 		{
 			if(_elementC.numChildren == 0) return;
-			var mc:MovieClip = _elementC.getChildAt(0) as MovieClip;
+			var mc:MovieClip = (_elementC.getChildAt(0) as Sprite).getChildAt(0) as MovieClip;
 			if(mc) {
 				isPlay
 				? mc.addEventListener(Event.ENTER_FRAME, currentElement_enterFrameHandler)
@@ -275,7 +293,12 @@ package app.module.exportSwf
 		 */
 		protected function allSelectCB_clickHandler(event:MouseEvent):void
 		{
-			for(var i:int = 0; i < elementList.dataGroup.numChildren; i++) {
+			if(elementList.dataProvider == null) return;
+			var i:int;
+			for(i = 0; i < elementList.dataProvider.length; i++) {
+				elementList.dataProvider.getItemAt(i).export = allSelectCB.selected;
+			}
+			for(i = 0; i < elementList.dataGroup.numChildren; i++) {
 				(elementList.dataGroup.getChildAt(i) as SwfItemRenderer).exportCB.selected = allSelectCB.selected;
 			}
 		}
@@ -317,28 +340,46 @@ package app.module.exportSwf
 		private function exportNextElement():void
 		{
 			var info:Object = _exportElementList.shift();
-			var element:Sprite = info.instance;
-			var mc:MovieClip = element as MovieClip;
+			var container:Sprite = info.instanceC;
+			var mc:MovieClip = info.instance as MovieClip;
 			var bounds:Rectangle = info.bounds;
-			var name:String = info.name.replace("::", ".");
-			element.graphics.clear();
 			
-			//根目录
-			var rootDirectory:File = new File(AppCommon.toolbox.settingPanel.filePathText.text + "exportSwf");
+			var rootDirectory:File = new File(AppCommon.toolbox.settingPanel.filePathText.text + "exportSwf")
+			var namePath:String = info.name.replace("::", ".");
+			namePath = rootDirectory.nativePath + "/" + namePath +"/";
+			
+			container.graphics.clear();
 			if(mc) {
 				for(var i:int=0; i < mc.totalFrames; i++) {
 					mc.gotoAndStop(i+1);
 					savePng(
-						new File(rootDirectory.nativePath + "/" + name +"/" + StringUtil.leadingZero(i+1, String(mc.totalFrames).length) +".png"),
-						bounds, mc
+						new File(namePath + StringUtil.leadingZero(i+1, String(mc.totalFrames).length) +".png"),
+						bounds, container
 					);
 				}
 			}
 			else {
-				savePng(
-					new File(rootDirectory.nativePath + "/" + name +"/1.png"),
-					bounds, element
-				);
+				var btn:SimpleButton = info.instance as SimpleButton;
+				if(btn) {
+					container.removeChildAt(0);
+					container.addChild(btn.upState);
+					savePng(new File(namePath +"1.png"), bounds, container);
+					
+					container.removeChildAt(0);
+					container.addChild(btn.overState);
+					savePng(new File(namePath +"2.png"), bounds, container);
+					
+					container.removeChildAt(0);
+					container.addChild(btn.downState);
+					savePng(new File(namePath +"3.png"), bounds, container);
+					
+					container.removeChildAt(0);
+					btn.upState = btn.upState;
+					container.addChild(btn);
+				}
+				else {
+					savePng(new File(namePath +"1.png"), bounds, container);
+				}
 			}
 			
 			drawElementBounds(info);

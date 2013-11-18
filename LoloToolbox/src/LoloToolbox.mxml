@@ -5,6 +5,7 @@
 					   xmlns:main="app.module.main.*"
 					   xmlns:uiEditor="app.module.uiEditor.*"
 					   xmlns:exportSwf="app.module.exportSwf.*"
+					   xmlns:imageCompressor="app.module.imageCompressor.*"
 					   width="970" height="670"
 					   showStatusBar="false"
 					   addedToStage="addedToStageHandler(event)"
@@ -27,6 +28,9 @@
 		<exportSwf:ExportSwfView id="exportSwf">
 		</exportSwf:ExportSwfView>
 		
+		<imageCompressor:ImageCompressorView id="imageCompressor">
+		</imageCompressor:ImageCompressorView>
+		
 		<uiEditor:UIEditorView id="uiEditor">
 		</uiEditor:UIEditorView>
 	</mx:ViewStack>
@@ -35,7 +39,9 @@
 	<s:Group id="toolMenu" x="0" y="35" width="100%" height="100%">
 		<s:Button id="exportMcBtn" x="30" y="30" width="120" height="60" label="动画导出"
 				  click="toolMenuBtn_clickHandler(event)" fontSize="20"/>
-		<s:Button id="uiEditorBtn" x="165" y="30" width="120" height="60" label="界面编辑"
+		<s:Button id="imageCompressorBtn" x="165" y="30" width="120" height="60" label="图像压缩"
+				  click="toolMenuBtn_clickHandler(event)" fontSize="20"/>
+		<s:Button id="uiEditorBtn" x="300" y="30" width="120" height="60" label="界面编辑"
 				  click="toolMenuBtn_clickHandler(event)" fontSize="20"/>
 	</s:Group>
 	

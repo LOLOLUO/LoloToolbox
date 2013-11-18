@@ -28,7 +28,7 @@ package app.module.main
 		/**
 		 * 显示面板
 		 */
-		public function show(total:Number=0, value:Number=0, label:String="%3 %%"):void
+		public function show(total:Number=0, value:Number=0, label:String=""):void
 		{
 			if(!this.parent) {
 				x = AppCommon.stage.stageWidth - width >> 1;

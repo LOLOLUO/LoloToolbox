@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<imageCompressor:ImageCompressor xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					 xmlns:s="library://ns.adobe.com/flex/spark" 
+					 xmlns:mx="library://ns.adobe.com/flex/mx"
+					 xmlns:imageCompressor="app.module.imageCompressor.*"
+					 width="100%" height="100%" xmlns:controls="app.controls.*"
+					 creationPolicy="all"
+					 addedToStage="addedToStageHandler(event)"
+					 >
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<s:RadioButtonGroup id="typeGroup" itemClick="typeGroup_itemClickHandler(event)"/>
+	</fx:Declarations>
+	
+	<controls:GroupBox id="contentC" x="0" y="0" width="370" height="215" title="压缩图像">
+		<s:Label x="30" y="32" text="选择目录："/>
+		<s:TextInput id="directoryPathText" x="95" y="25" width="200" height="25" color="#666666"
+					 editable="false"/>
+		<s:Button id="directoryPathBtn" x="300" y="25" width="45" height="25" label="浏览"
+				  click="directoryPathBtn_clickHandler(event)"/>
+		
+		<s:Label x="30" y="122" text="压缩品质："/>
+		<s:Label x="30" y="77" text="图像格式："/>
+		
+		<s:HSlider id="qualityHS" x="95" y="123" width="70" change="qualityHS_changeHandler(event)"
+				   maximum="95" minimum="50" value="80"/>
+		<s:TextInput id="qualityText" x="175" y="115" width="35" height="25" focusOut="qualityText_focusOutHandler(event)"
+					 change="qualityText_changeHandler(event)" maxChars="2" restrict="0-9" text="80"/>
+		<s:HGroup x="95" y="73" gap="20">
+			<s:RadioButton label="AUTO" groupName="typeGroup" value="auto" selected="true" toolTip="图像格式为原图的格式"/>
+			<s:RadioButton label="JPG" groupName="typeGroup" value="jpg" toolTip="指定图像格式为JPG图像" />
+			<s:RadioButton label="PNG" groupName="typeGroup" value="png" toolTip="指定图像类型为PNG图像" />
+		</s:HGroup>
+		<s:Button id="compressBtn" x="92" y="160" width="80" height="30" label="开始压缩"
+				  click="compressBtn_clickHandler(event)" color="#960000" enabled="false"
+				  fontSize="14"/>
+	</controls:GroupBox>
+	
+</imageCompressor:ImageCompressor>
